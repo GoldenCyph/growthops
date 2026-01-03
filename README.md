@@ -1,36 +1,72 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# GrowthOps – Conversion Tracking & Analytics Dashboard
 
-## Getting Started
+GrowthOps is a production-style Next.js application that demonstrates how growth and product teams can instrument user journeys, track conversion events, and visualize activity through an internal dashboard.
 
-First, run the development server:
+The project focuses on **reliability, measurability, and operational clarity**, rather than feature volume.
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+---
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Problem Statement
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+Growth and marketing teams require accurate, real-time visibility into how users interact with key product entry points (such as sign-ups).  
+Manual tracking or poorly instrumented analytics leads to unreliable decision-making.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+This project simulates a direct-to-consumer growth pipeline where user actions are:
+- Tracked consistently
+- Persisted to a backend
+- Made visible to internal stakeholders
 
-## Learn More
+---
 
-To learn more about Next.js, take a look at the following resources:
+## Core Features
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+- Next.js App Router architecture
+- Firebase-backed event ingestion
+- Conversion event tracking (e.g. sign-up clicks)
+- Auth-protected internal dashboard
+- Daily conversion visualization using charts
+- Clean separation of concerns (UI, analytics, infrastructure)
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+---
 
-## Deploy on Vercel
+## Architecture Overview
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+### Frontend
+- **Next.js (App Router)** for routing and layout
+- Client components used selectively for interactive views
+- Centralized analytics abstraction for event tracking
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+### Analytics Layer
+- All user events pass through a single `trackEvent` function
+- Event names are defined centrally to prevent inconsistencies
+- Events are timestamped and stored for auditability
+
+### Backend
+- **Firebase Firestore** used as an event store
+- Server timestamps ensure consistency
+- Authentication protects internal dashboards
+
+### Dashboard
+- Internal-only views display conversion activity
+- Charts surface daily trends for quick decision-making
+- Layout mirrors common enterprise internal tools
+
+---
+
+## Folder Structure
+
+```txt
+src/
+├─ app/
+│  ├─ (auth)/login
+│  ├─ (dashboard)/events
+│  ├─ layout.tsx
+│  └─ page.tsx
+│
+├─ lib/
+│  ├─ analytics/
+│  │  ├─ events.ts
+│  │  └─ track.ts
+│  └─ firebase/
+│     ├─ client.ts
+│     └─ auth.ts
