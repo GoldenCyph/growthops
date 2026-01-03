@@ -1,4 +1,7 @@
 "use client";
+import { onAuthStateChanged } from "firebase/auth";
+import { auth } from "@/lib/firebase/client";
+import { useRouter } from "next/navigation";
 
 import { useEffect, useState } from "react";
 import { collection, getDocs, orderBy, query } from "firebase/firestore";
@@ -13,6 +16,19 @@ type EventDoc = {
 export default function EventsDashboard() {
   const [events, setEvents] = useState<EventDoc[]>([]);
   const [loading, setLoading] = useState(true);
+
+const router = useRouter();
+
+useEffect(() => {
+  const unsub = onAuthStateChanged(auth, (user) => {
+    if (!user) {
+      router.push("/login");
+    }
+  });
+
+  return () => unsub();
+}, []);
+
 
   useEffect(() => {
     async function fetchEvents() {
