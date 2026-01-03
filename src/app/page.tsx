@@ -1,4 +1,6 @@
 "use client";
+import { trackEvent } from "@/lib/analytics/track";
+import { EVENTS } from "@/lib/analytics/events";
 
 import { useEffect } from "react";
 
@@ -14,7 +16,7 @@ export default function Home() {
 
       <button
     onClick={() => {
-        console.log("sign up clicked");
+        trackEvent(EVENTS.SIGN_UP_CLICKED);
       }}
         style={{
           marginTop: 20,
